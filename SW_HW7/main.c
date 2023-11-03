@@ -13,7 +13,7 @@ void Turn_Right();
 void Move_Backward();
 void Stop();
 
-void main() 
+int main()
 {
 	char* obstacle_Location;
 	bool dust_Existence;
@@ -26,7 +26,7 @@ void main()
 		obstacle_Location = Det_OL();	//FLR
 		dust_Existence = Det_DE();
 
-		if(strcmp(obstacle_Location, "100") == 0 || strcmp(obstacle_Location, "101") == 0)
+		if (strcmp(obstacle_Location, "100") == 0 || strcmp(obstacle_Location, "101") == 0)
 		{
 			Cleaner("off");
 			Turn_Left();
@@ -54,36 +54,51 @@ void main()
 			}
 			Move_Foward();
 		}
-		Sleep(200); // 200 ¹Ğ¸®ÃÊ ´ë±â
+		Sleep(200); // 200 ë°€ë¦¬ì´ˆ ëŒ€ê¸°
 	}
 }
 
 char* Det_OL()
 {
-	// Det_OL_F() ¹× Det_OL_L(), Det_OL_R()ÀÇ °á°ú¸¦ ÇÕÇÏ¿© ¹®ÀÚ¿­À» ¹İÈ¯
-	char* result = (char*)malloc(4); // ¸Ş¸ğ¸® ÇÒ´ç
+	// Det_OL_F() ë° Det_OL_L(), Det_OL_R()ì˜ ê²°ê³¼ë¥¼ í•©í•˜ì—¬ ë¬¸ìì—´ì„ ë°˜í™˜
+	char* result = (char*)malloc(4); // ë©”ëª¨ë¦¬ í• ë‹¹
 	snprintf(result, 4, "%d%d%d", Det_OL_F(), Det_OL_L(), Det_OL_R());
 	return result;
 }
 int Det_OL_F()	// 
 {
-	int F;
+	int F = 0;
+	bool front_obstacle = true;
+	if (front_obstacle)
+	{
+		F = 1;
+	}
 	return F;
 }
 int Det_OL_L()	// 
 {
-	int L;
+	int L = 0;
+	bool left_obstacle = true;
+	if (left_obstacle)
+	{
+		L = 1;
+	}
 	return L;
 }
 int Det_OL_R()	// 
 {
-	int R;
+	int R = 0;
+	bool right_obstacle = true;
+	if (right_obstacle)
+	{
+		R = 1;
+	}
 	return R;
 }
 
 bool Det_DE()
 {
-	bool de;
+	bool de = true;
 	return de;
 }
 
@@ -91,15 +106,15 @@ void Cleaner(char* command)
 {
 	if (strcmp(command, "on") == 0)
 	{
-		// "on"ÀÏ ¶§ÀÇ µ¿ÀÛ Á¤ÀÇ
+		// "on"ì¼ ë•Œì˜ ë™ì‘ ì •ì˜
 	}
 	else if (strcmp(command, "off") == 0)
 	{
-		// "off"ÀÏ ¶§ÀÇ µ¿ÀÛ Á¤ÀÇ
+		// "off"ì¼ ë•Œì˜ ë™ì‘ ì •ì˜
 	}
 	else if (strcmp(command, "up") == 0)
 	{
-		// "up"ÀÏ ¶§ÀÇ µ¿ÀÛ Á¤ÀÇ
+		// "up"ì¼ ë•Œì˜ ë™ì‘ ì •ì˜
 	}
 }
 
@@ -120,7 +135,22 @@ void Turn_Right()
 
 void Move_Backward()
 {
-
+	char* obstacle_Location;
+	while (true)
+	{
+		obstacle_Location = Det_OL();
+		if (obstacle_Location == "000" || obstacle_Location == "001")
+		{
+			Turn_Left();
+			break;
+		}
+		if (obstacle_Location == "010")
+		{
+			Turn_Right();
+			break;
+		}
+	}
+	Sleep(200);
 }
 
 void Stop()
