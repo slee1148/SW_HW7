@@ -2,82 +2,41 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
-#include <windows.h>
-
-char* Det_OL();
-bool Det_DE();
-void Cleaner(char* command);
-void Move_Foward();
-void Turn_Left();
-void Turn_Right();
-void Move_Backward();
-void Stop();
-
-void main() 
-{
-	char* obstacle_Location;
-	bool dust_Existence;
-
-	Move_Foward();
-	Cleaner("on");
-
-	while (1)
-	{
-		obstacle_Location = Det_OL();	//FLR
-		dust_Existence = Det_DE();
-
-		if(strcmp(obstacle_Location, "100") == 0 || strcmp(obstacle_Location, "101") == 0)
-		{
-			Cleaner("off");
-			Turn_Left();
-		}
-		else if (strcmp(obstacle_Location, "110"))
-		{
-			Cleaner("off");
-			Turn_Right();
-		}
-		else if (strcmp(obstacle_Location, "111"))
-		{
-			Stop();
-			Cleaner("off");
-			Move_Backward();
-		}
-		else
-		{
-			if (dust_Existence)
-			{
-				Cleaner("up");
-			}
-			else
-			{
-				Cleaner("on");
-			}
-			Move_Foward();
-		}
-		Sleep(200); // 200 ¹Ğ¸®ÃÊ ´ë±â
-	}
-}
 
 char* Det_OL()
 {
-	// Det_OL_F() ¹× Det_OL_L(), Det_OL_R()ÀÇ °á°ú¸¦ ÇÕÇÏ¿© ¹®ÀÚ¿­À» ¹İÈ¯
-	char* result = (char*)malloc(4); // ¸Ş¸ğ¸® ÇÒ´ç
+	char* result = (char*)malloc(4); // ë©”ëª¨ë¦¬ í• ë‹¹
 	snprintf(result, 4, "%d%d%d", Det_OL_F(), Det_OL_L(), Det_OL_R());
 	return result;
 }
 int Det_OL_F()	// 
 {
-	int F;
+	int F = 0;
+	bool front_obstacle;
+	if (front_obstacle)
+	{
+		F = 1;
+	}
 	return F;
 }
 int Det_OL_L()	// 
 {
-	int L;
+	int L = 0;
+	bool left_obstacle;
+	if (left_obstacle)
+	{
+		L = 1;
+	}
 	return L;
 }
 int Det_OL_R()	// 
 {
-	int R;
+	int R = 0;
+	bool right_obstacle;
+	if (right_obstacle)
+	{
+		R = 1;
+	}
 	return R;
 }
 
@@ -91,15 +50,15 @@ void Cleaner(char* command)
 {
 	if (strcmp(command, "on") == 0)
 	{
-		// "on"ÀÏ ¶§ÀÇ µ¿ÀÛ Á¤ÀÇ
+		// "on"ì¼ ë•Œì˜ ë™ì‘ ì •ì˜
 	}
 	else if (strcmp(command, "off") == 0)
 	{
-		// "off"ÀÏ ¶§ÀÇ µ¿ÀÛ Á¤ÀÇ
+		// "off"ì¼ ë•Œì˜ ë™ì‘ ì •ì˜
 	}
 	else if (strcmp(command, "up") == 0)
 	{
-		// "up"ÀÏ ¶§ÀÇ µ¿ÀÛ Á¤ÀÇ
+		// "up"ì¼ ë•Œì˜ ë™ì‘ ì •ì˜
 	}
 }
 
@@ -120,10 +79,70 @@ void Turn_Right()
 
 void Move_Backward()
 {
-
+	char* obstacle_Location;
+	while (true)
+	{
+		obstacle_Location = Det_OL();
+		if (obstacle_Location == "000" || obstacle_Location == "001")
+		{
+			Turn_Left();
+			break;
+		}
+		if (obstacle_Location == "010")
+		{
+			Turn_Right();
+			break;
+		}
+	}
+	wait(200);
 }
 
 void Stop()
 {
+
+}
+
+int main()
+{
+	char* obstacle_Location;
+	bool dust_Existence;
+
+	Move_Foward();
+	Cleaner("on");
+
+	while (true)
+	{
+		obstacle_Location = Det_OL();	//FLR
+		dust_Existence = Det_DE();
+
+		if (obstacle_Location == "100" || obstacle_Location == "101")
+		{
+			Cleaner("off");
+			Turn_Left();
+		}
+		else if (obstacle_Location == "110")
+		{
+			Cleaner("off");
+			Turn_Right();
+		}
+		else if (obstacle_Location == "111")
+		{
+			Stop();
+			Cleaner("off");
+			Move_Backward();
+		}
+		else
+		{
+			if (dust_Existence)
+			{
+				Cleaner("up");
+			}
+			else
+			{
+				Cleaner("on");
+			}
+		}
+		wait(200);
+	}
 
 }
