@@ -93,7 +93,7 @@ void Cleaner(char* command)
 
 void Move_Foward()
 {
-
+	
 }
 
 void Turn_Left()
@@ -108,6 +108,20 @@ void Turn_Right()
 
 void Move_Backward()
 {
+	while (true)
+	{
+		if(obstacle_Location=="000"||obstacle_Location=="001")
+		{
+			Turn_Left();
+			break;
+		}
+		if(obstacle_Location=="010")
+		{
+			Turn_Right();
+			break;
+		}
+	}
+	wait(200);
 
 }
 
