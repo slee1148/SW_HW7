@@ -2,6 +2,16 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
+#include <windows.h>
+
+char* Det_OL();
+bool Det_DE();
+void Cleaner(char* command);
+void Move_Foward();
+void Turn_Left();
+void Turn_Right();
+void Move_Backward();
+void Stop();
 
 void main() 
 {
@@ -11,22 +21,22 @@ void main()
 	Move_Foward();
 	Cleaner("on");
 
-	while (true)
+	while (1)
 	{
 		obstacle_Location = Det_OL();	//FLR
 		dust_Existence = Det_DE();
 
-		if(obstacle_Location=="100"||obstacle_Location=="101")
+		if(strcmp(obstacle_Location, "100") == 0 || strcmp(obstacle_Location, "101") == 0)
 		{
 			Cleaner("off");
 			Turn_Left();
 		}
-		else if (obstacle_Location == "110")
+		else if (strcmp(obstacle_Location, "110"))
 		{
 			Cleaner("off");
 			Turn_Right();
 		}
-		else if (obstacle_Location == "111")
+		else if (strcmp(obstacle_Location, "111"))
 		{
 			Stop();
 			Cleaner("off");
@@ -44,14 +54,16 @@ void main()
 			}
 			Move_Foward();
 		}
-		wait(200);
+		Sleep(200); // 200 밀리초 대기
 	}
-
 }
 
 char* Det_OL()
 {
-	return (char)Det_OL_F() + (char)Det_OL_L() + (char)Det_OL_R();
+	// Det_OL_F() 및 Det_OL_L(), Det_OL_R()의 결과를 합하여 문자열을 반환
+	char* result = (char*)malloc(4); // 메모리 할당
+	snprintf(result, 4, "%d%d%d", Det_OL_F(), Det_OL_L(), Det_OL_R());
+	return result;
 }
 int Det_OL_F()	// 
 {
@@ -77,17 +89,17 @@ bool Det_DE()
 
 void Cleaner(char* command)
 {
-	if (command == "on")
+	if (strcmp(command, "on") == 0)
 	{
-
+		// "on"일 때의 동작 정의
 	}
-	else if (command == "off")
+	else if (strcmp(command, "off") == 0)
 	{
-
+		// "off"일 때의 동작 정의
 	}
-	else if (command == "up")
+	else if (strcmp(command, "up") == 0)
 	{
-
+		// "up"일 때의 동작 정의
 	}
 }
 
